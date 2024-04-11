@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "e8ae70ab-c758-46bd-aef8-75065234042e",
+		"name": "Recaudacionesui_procesos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32807686"
+	},
+	"item": [
+		{
+			"name": "Listadodeprocesos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Response status code is 200', function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"})",
+							"",
+							"pm.test('Verify that the \\'estado\\' object is present in the response and contains the expected fields', function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function (item) {",
+							"        pm.expect(item.estado).to.exist.and.to.be.an('object');",
+							"        pm.expect(item.estado.id).to.exist.and.to.be.a('number');",
+							"        pm.expect(item.estado.descripcion).to.exist.and.to.be.a('string');",
+							"    });",
+							"})",
+							"",
+							"pm.test('Verify that porcentajeAvance is a non-negative integer', function () {",
+							"    const responseData = pm.response.json();",
+							"    responseData.forEach(function (item) {",
+							"        pm.expect(item.porcentajeAvance).to.be.a('number');",
+							"        pm.expect(item.porcentajeAvance).to.be.at.least(0);",
+							"    });",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://aportesapi-ams01-operaciones-dev.apps.ams01-noprod.ams.red/api/aportes/proceso"
+			},
+			"response": []
+		},
+		{
+			"name": "listadoprocesosconfiltros",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is set to 'application/json'\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.equal(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the 'content' array is present in the response and contains at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.content).to.exist.and.to.be.an('array');",
+							"    pm.expect(responseData.content).to.have.lengthOf.at.least(1);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate that the 'id' in the 'content' array is a non-negative integer\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.content).to.be.an('array');",
+							"  ",
+							"  responseData.content.forEach(function (item) {",
+							"    pm.expect(item.id).to.be.a('number').and.to.be.at.least(0, \"Value should be a non-negative integer\");",
+							"  });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://aportesapi-ams01-operaciones-dev.apps.ams01-noprod.ams.red/api/aportes/proceso/filtrar?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"aportesapi-ams01-operaciones-dev",
+						"apps",
+						"ams01-noprod",
+						"ams",
+						"red"
+					],
+					"path": [
+						"api",
+						"aportes",
+						"proceso",
+						"filtrar"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
